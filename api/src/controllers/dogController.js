@@ -18,11 +18,36 @@ const getDogId = async (isApi, id) => {
   const image = isApi
     ? (await axios.get(`${URL_BASE}/images/${reference_image_id}`)).data.url
     : dogId.image;
+  const temperament = isApi ? dogId.temperament : dogId?.map((t) => t.name);
 
-  return { id, weight, height, name, life_span, image };
+  return { id, weight, height, name, life_span, image, temperament };
 };
 
-const getDogName = async () => {};
+const getDogName = async (name) => {
+  let listDog = await Dog.findAll({
+    where: {
+      name: {
+        [Op.iLike]: `%${name}%`,
+        a,
+      },
+    },
+    include: {
+      model: Temperament,
+      attributes: ["name"],
+      through: { attributes: [] },
+    },
+  });
+
+  let listDogApiRaw = (await axios.get(`${URL_BASE}/breeds`)).data;
+  //const listRecipeApiRaw = [...data];
+
+  listDogApiRaw = listDogApiRaw.filter((dog) =>
+    dog.name.toLowerCase().includes(name.toLowerCase())
+  );
+  let listDogApi = await cleanInformation(listDogApiRaw);
+
+  return [...listDogApi, ...listDog];
+};
 
 const getAllDogs = async () => {};
 

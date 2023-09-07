@@ -1,4 +1,8 @@
-const { getDogId } = require("../controllers/dogController");
+const {
+  getDogId,
+  getDogName,
+  getAllDogs,
+} = require("../controllers/dogController");
 
 const getDogHandler = async (req, res) => {
   const { id } = req.params;
@@ -12,7 +16,14 @@ const getDogHandler = async (req, res) => {
   }
 };
 const getDogsHandler = async (req, res) => {
-  res.status(200).send("Estoy en get dogs handler");
+  const { name } = req.query;
+
+  try {
+    let listRecipes = name ? await getDogName(name) : await getAllDogs();
+    res.status(200).json(listRecipes);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
 };
 
 const postDogHandler = async (req, res) => {
