@@ -2,6 +2,7 @@ const {
   getDogId,
   getDogName,
   getAllDogs,
+  createDog,
 } = require("../controllers/dogController");
 
 const getDogHandler = async (req, res) => {
@@ -27,7 +28,19 @@ const getDogsHandler = async (req, res) => {
 };
 
 const postDogHandler = async (req, res) => {
-  res.status(200).send("Estoy en post dog handler");
+  let { weight, height, name, life_span, image, temperament } = req.body;
+
+  try {
+    const newDog = await createDog({
+      weight,
+      height,
+      name,
+      life_span,
+      image,
+      temperament,
+    });
+    res.status(200).json(newDog);
+  } catch (error) {}
 };
 
 module.exports = {

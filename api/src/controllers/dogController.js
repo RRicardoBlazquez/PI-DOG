@@ -1,6 +1,7 @@
 const { Dog, Temperament } = require("../db");
 const { Op } = require("sequelize");
 const axios = require("axios");
+const { setTemperament } = require("./temperamentController");
 const { URL_BASE } = process.env;
 
 const getDogId = async (isApi, id) => {
@@ -51,7 +52,28 @@ const getDogName = async (name) => {
 
 const getAllDogs = async () => {};
 
-const createDog = async () => {};
+const createDog = async ({
+  weight,
+  height,
+  name,
+  life_span,
+  image,
+  temperament,
+}) => {
+  const newDog = await Dog.create({
+    weight,
+    height,
+    name,
+    life_span,
+    image,
+    created: true,
+  });
+  let temperaments = await setTemperament(temperament);
+
+  const listTemperamentId = temperaments.map((t) => t.id);
+  newDog.addTemperaments(listTemperamentId);
+  return newDog;
+};
 
 const cleanInformation = async (list) =>
   await list.map(({ weight, height, name, life_span, reference_image_id }) => {
