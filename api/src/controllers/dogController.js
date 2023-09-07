@@ -29,7 +29,6 @@ const getDogName = async (name) => {
     where: {
       name: {
         [Op.iLike]: `%${name}%`,
-        a,
       },
     },
     include: {
@@ -75,12 +74,19 @@ const createDog = async ({
   return newDog;
 };
 
-const cleanInformation = async (list) =>
-  await list.map(({ weight, height, name, life_span, reference_image_id }) => {
-    {
-      weight, height, name, life_span, reference_image_id;
+const cleanInformation = async (list) => {
+  return await list.map(
+    ({ weight, height, name, life_span, reference_image_id }) => {
+      return {
+        weight: weight.metric,
+        height: height.metric,
+        name,
+        life_span,
+        reference_image_id,
+      };
     }
-  });
+  );
+};
 
 module.exports = {
   getDogId,
