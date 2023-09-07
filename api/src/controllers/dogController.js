@@ -6,7 +6,7 @@ const { URL_BASE } = process.env;
 const getDogId = async (isApi, id) => {
   const dogId = isApi
     ? (await axios.get(`${URL_BASE}/breeds/${id}`)).data
-    : await Dog.findBypk(id, {
+    : await Dog.findByPk(id, {
         include: {
           model: Temperament,
           attributes: ["name"],
