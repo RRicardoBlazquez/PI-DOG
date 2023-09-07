@@ -1,9 +1,12 @@
+const { getDogId } = require("../controllers/dogController");
+
 const getDogHandler = async (req, res) => {
   const { id } = req.params;
+  const isApi = isNaN(id) ? false : true;
 
   try {
-    const detail = await getDogId();
-    res.status(200).send("Estoy en get dog handler");
+    const detail = await getDogId(isApi, id);
+    res.status(200).json(detail);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
