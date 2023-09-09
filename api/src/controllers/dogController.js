@@ -16,12 +16,50 @@ const getDogId = async (isApi, id) => {
       });
 
   const { weight, height, name, life_span, reference_image_id } = dogId;
-  const image = isApi
-    ? (await axios.get(`${URL_BASE}/images/${reference_image_id}`)).data.url
-    : dogId.image;
-  const temperament = isApi ? dogId.temperament : dogId?.map((t) => t.name);
+  const image = isApi ? await getImageApi(reference_image_id) : dogId.image;
+  const temperament = isApi ? dogId.temperament : dogId.temperament;
 
   return { id, weight, height, name, life_span, image, temperament };
+};
+
+const getImageApi = async (reference_image_id) => {
+  return (await axios.get(`${URL_BASE}/images/${reference_image_id}`)).data.url;
+};
+
+const getDogIdBase = async (id) => {
+  const dogId = await Dog.findByPk(id, {
+    include: {
+      model: Temperament,
+      attributes: ["name"],
+      through: { attributes: [] },
+    },
+  });
+  dogId.temperament = dogId?.map((t) => t.name);
+
+  return dogId;
+};
+
+const getDogIdApi = async (id) => {
+  const dogIdRaw = (await axios.get(`${URL_BASE}/breeds/${id}`)).data;
+  const { weight, height, name, life_span, reference_image_id, temperament } =
+    dogIdRaw;
+  const image = await getImageApi(reference_image_id);
+  const dogId = {
+    id,
+    weight: weight.metric,
+    height: height.metric,
+    name,
+    life_span,
+    image: image,
+    temperament,
+    create: false,
+  };
+  return { ...dogId };
+};
+
+//cambio el array de objetos temperament a uno de string
+const refactorTemperament = (dog) => {
+  return dog.map((t) => t.name);
 };
 
 const getDogName = async (name) => {
@@ -74,7 +112,15 @@ const createDog = async ({
 const cleanInformation = async (list) => {
   const newListDog = await Promise.all(
     list.map(
-      async ({ id, weight, height, name, life_span, reference_image_id }) => {
+      async ({
+        id,
+        weight,
+        height,
+        name,
+        life_span,
+        reference_image_id,
+        temperament,
+      }) => {
         const image = (
           await axios.get(`${URL_BASE}/images/${reference_image_id}`)
         ).data.url;
@@ -85,6 +131,8 @@ const cleanInformation = async (list) => {
           name,
           life_span,
           image: image,
+          temperament,
+          create: false,
         };
       }
     )
@@ -94,6 +142,8 @@ const cleanInformation = async (list) => {
 
 module.exports = {
   getDogId,
+  getDogIdApi,
+  getDogIdBase,
   getDogName,
   getAllDogs,
   createDog,

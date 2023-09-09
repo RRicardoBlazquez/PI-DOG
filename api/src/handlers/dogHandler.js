@@ -3,19 +3,23 @@ const {
   getDogName,
   getAllDogs,
   createDog,
+  getDogIdBase,
+  getDogIdApi,
 } = require("../controllers/dogController");
 
 const getDogHandler = async (req, res) => {
   const { id } = req.params;
-  const isApi = isNaN(id) ? false : true;
+  //const isApi = isNaN(id) ? false : true;
 
   try {
-    const detail = await getDogId(isApi, id);
+    //const detail = await getDogId(isApi, id);
+    const detail = isNaN(id) ? await getDogIdBase(id) : await getDogIdApi(id);
     res.status(200).json(detail);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
+
 const getDogsHandler = async (req, res) => {
   const { name } = req.query;
 
