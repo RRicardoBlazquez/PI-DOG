@@ -20,8 +20,9 @@ const getDogsHandler = async (req, res) => {
   const { name } = req.query;
 
   try {
-    let listRecipes = name ? await getDogName(name) : await getAllDogs();
-    res.status(200).json(listRecipes);
+    let listDog = name ? await getDogName(name) : await getAllDogs();
+    console.log(listDog);
+    res.status(200).json(listDog);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }

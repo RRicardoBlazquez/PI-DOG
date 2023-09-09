@@ -38,12 +38,9 @@ const getDogName = async (name) => {
     },
   });
 
-  let listDogApiRaw = (await axios.get(`${URL_BASE}/breeds`)).data;
-  //const listRecipeApiRaw = [...data];
+  let listDogApiRaw = (await axios.get(`${URL_BASE}/breeds/search?q=${name}`))
+    .data;
 
-  listDogApiRaw = listDogApiRaw.filter((dog) =>
-    dog.name.toLowerCase().includes(name.toLowerCase())
-  );
   let listDogApi = await cleanInformation(listDogApiRaw);
 
   return [...listDogApi, ...listDog];
@@ -75,17 +72,24 @@ const createDog = async ({
 };
 
 const cleanInformation = async (list) => {
-  return await list.map(
-    ({ weight, height, name, life_span, reference_image_id }) => {
-      return {
-        weight: weight.metric,
-        height: height.metric,
-        name,
-        life_span,
-        reference_image_id,
-      };
-    }
+  const newListDog = await Promise.all(
+    list.map(
+      async ({ id, weight, height, name, life_span, reference_image_id }) => {
+        const image = (
+          await axios.get(`${URL_BASE}/images/${reference_image_id}`)
+        ).data.url;
+        return {
+          id,
+          weight: weight.metric,
+          height: height.metric,
+          name,
+          life_span,
+          image: image,
+        };
+      }
+    )
   );
+  return newListDog;
 };
 
 module.exports = {
