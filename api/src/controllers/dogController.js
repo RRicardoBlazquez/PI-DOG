@@ -2,28 +2,11 @@ const { Dog, Temperament } = require("../db");
 const { Op } = require("sequelize");
 const axios = require("axios");
 const { setTemperament } = require("./temperamentController");
-const { URL_BASE } = process.env;
+const { URL_BASE, API_KEY } = process.env;
 
 const getDogId = async (isApi, id) => {
-  const dogId = isApi
-    ? (await axios.get(`${URL_BASE}/breeds/${id}`)).data
-    : await Dog.findByPk(id, {
-        include: {
-          model: Temperament,
-          attributes: ["name"],
-          through: { attributes: [] },
-        },
-      });
-
-  const { weight, height, name, life_span, reference_image_id } = dogId;
-  const image = isApi ? await getImageApi(reference_image_id) : dogId.image;
-  const temperament = isApi ? dogId.temperament : dogId.temperament;
-
-  return { id, weight, height, name, life_span, image, temperament };
-};
-
-const getImageApi = async (reference_image_id) => {
-  return (await axios.get(`${URL_BASE}/images/${reference_image_id}`)).data.url;
+  const dogId = isApi ? await getDogIdApi(id) : await getDogIdBase(id);
+  return { ...dogId };
 };
 
 const getDogIdBase = async (id) => {
@@ -41,11 +24,6 @@ const getDogIdBase = async (id) => {
 const getDogIdApi = async (id) => {
   const dogIdRaw = (await axios.get(`${URL_BASE}/breeds/${id}`)).data;
   return { ...(await cleanInformation([dogIdRaw])).pop() };
-};
-
-//cambio el array de objetos temperament a uno de string
-const refactorTemperament = (temperaments) => {
-  return temperaments.map((t) => t.name).join(", ");
 };
 
 const getDogName = async (name) => {
@@ -70,7 +48,20 @@ const getDogName = async (name) => {
   ];
 };
 
-const getAllDogs = async () => {};
+const getAllDogs = async () => {
+  const dogsBase = await Dog.findAll({
+    include: {
+      model: Temperament,
+      attributes: ["name"],
+      through: { attributes: [] },
+    },
+  });
+
+  const dogsApi = (await axios.get(`${URL_BASE}/breeds`)).data;
+  const listDogsApi = await cleanInformation(dogsApi);
+
+  return [...cleanInformationBase(dogsBase), ...listDogsApi];
+};
 
 const createDog = async ({
   weight,
@@ -94,6 +85,10 @@ const createDog = async ({
   return newDog;
 };
 
+const getImageApi = async (reference_image_id) => {
+  return (await axios.get(`${URL_BASE}/images/${reference_image_id}`)).data.url;
+};
+
 const cleanInformationBase = (list) => {
   return list.map(
     ({ id, weight, height, name, life_span, image, temperaments, create }) => {
@@ -115,32 +110,28 @@ const cleanInformationBase = (list) => {
 };
 
 const cleanInformation = async (list) => {
-  return await Promise.all(
-    list.map(
-      async ({
+  return list.map(
+    async ({
+      id,
+      weight,
+      height,
+      name,
+      life_span,
+      reference_image_id,
+      temperament,
+    }) => {
+      const image = `${URL_BASE}/images/${reference_image_id}.jpg`;
+      return {
         id,
-        weight,
-        height,
+        weight: weight.metric,
+        height: height.metric,
         name,
         life_span,
-        reference_image_id,
+        image: image,
         temperament,
-      }) => {
-        const image = (
-          await axios.get(`${URL_BASE}/images/${reference_image_id}`)
-        ).data.url;
-        return {
-          id,
-          weight: weight.metric,
-          height: height.metric,
-          name,
-          life_span,
-          image: image,
-          temperament,
-          create: false,
-        };
-      }
-    )
+        create: false,
+      };
+    }
   );
 };
 
