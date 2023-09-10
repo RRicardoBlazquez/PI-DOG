@@ -109,9 +109,9 @@ const cleanInformationBase = (list) => {
   );
 };
 
-const cleanInformation = async (list) => {
+const cleanInformation = (list) => {
   return list.map(
-    async ({
+    ({
       id,
       weight,
       height,
