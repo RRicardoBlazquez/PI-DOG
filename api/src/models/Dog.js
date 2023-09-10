@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
       weight: { type: DataTypes.STRING },
       height: { type: DataTypes.STRING },
       life_span: { type: DataTypes.STRING },
-      cretated: { type: DataTypes.BOOLEAN, defaultValue: true },
+      create: { type: DataTypes.BOOLEAN, defaultValue: true },
     },
     { timestamps: false }
   );

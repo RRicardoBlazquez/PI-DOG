@@ -41,29 +41,16 @@ const getDogIdBase = async (id) => {
 
 const getDogIdApi = async (id) => {
   const dogIdRaw = (await axios.get(`${URL_BASE}/breeds/${id}`)).data;
-  const { weight, height, name, life_span, reference_image_id, temperament } =
-    dogIdRaw;
-  const image = await getImageApi(reference_image_id);
-  const dogId = {
-    id,
-    weight: weight.metric,
-    height: height.metric,
-    name,
-    life_span,
-    image: image,
-    temperament,
-    create: false,
-  };
-  return { ...dogId };
+  return { ...(await cleanInformation([dogIdRaw])).pop() };
 };
 
 //cambio el array de objetos temperament a uno de string
-const refactorTemperament = (dog) => {
-  return dog.map((t) => t.name);
+const refactorTemperament = (temperament) => {
+  return temperament.map((t) => t.name).join(",");
 };
 
 const getDogName = async (name) => {
-  let listDog = await Dog.findAll({
+  let listDogBaseRaw = await Dog.findAll({
     where: {
       name: {
         [Op.iLike]: `%${name}%`,
@@ -75,6 +62,24 @@ const getDogName = async (name) => {
       through: { attributes: [] },
     },
   });
+
+  const listDog = listDogBaseRaw.map(
+    ({ id, weight, height, name, life_span, image, temperaments, create }) => {
+      const newTemperaments = temperaments.map(
+        (temperament) => temperament.name
+      );
+      return {
+        id,
+        weight,
+        height,
+        name,
+        life_span,
+        image,
+        temperament: newTemperaments.join(","),
+        create,
+      };
+    }
+  );
 
   let listDogApiRaw = (await axios.get(`${URL_BASE}/breeds/search?q=${name}`))
     .data;
@@ -100,7 +105,6 @@ const createDog = async ({
     name,
     life_span,
     image,
-    created: true,
   });
   let temperaments = await setTemperament(temperament);
 
@@ -110,7 +114,7 @@ const createDog = async ({
 };
 
 const cleanInformation = async (list) => {
-  const newListDog = await Promise.all(
+  return await Promise.all(
     list.map(
       async ({
         id,
@@ -137,7 +141,6 @@ const cleanInformation = async (list) => {
       }
     )
   );
-  return newListDog;
 };
 
 module.exports = {
