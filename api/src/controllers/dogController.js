@@ -34,9 +34,8 @@ const getDogIdBase = async (id) => {
       through: { attributes: [] },
     },
   });
-  dogId.temperament = dogId?.map((t) => t.name);
 
-  return dogId;
+  return cleanInformationBase([dogId]).pop();
 };
 
 const getDogIdApi = async (id) => {
@@ -45,12 +44,12 @@ const getDogIdApi = async (id) => {
 };
 
 //cambio el array de objetos temperament a uno de string
-const refactorTemperament = (temperament) => {
-  return temperament.map((t) => t.name).join(",");
+const refactorTemperament = (temperaments) => {
+  return temperaments.map((t) => t.name).join(", ");
 };
 
 const getDogName = async (name) => {
-  let listDogBaseRaw = await Dog.findAll({
+  const listDogBaseRaw = await Dog.findAll({
     where: {
       name: {
         [Op.iLike]: `%${name}%`,
@@ -62,31 +61,13 @@ const getDogName = async (name) => {
       through: { attributes: [] },
     },
   });
-
-  const listDog = listDogBaseRaw.map(
-    ({ id, weight, height, name, life_span, image, temperaments, create }) => {
-      const newTemperaments = temperaments.map(
-        (temperament) => temperament.name
-      );
-      return {
-        id,
-        weight,
-        height,
-        name,
-        life_span,
-        image,
-        temperament: newTemperaments.join(","),
-        create,
-      };
-    }
-  );
-
-  let listDogApiRaw = (await axios.get(`${URL_BASE}/breeds/search?q=${name}`))
+  const listDogApiRaw = (await axios.get(`${URL_BASE}/breeds/search?q=${name}`))
     .data;
 
-  let listDogApi = await cleanInformation(listDogApiRaw);
-
-  return [...listDogApi, ...listDog];
+  return [
+    ...cleanInformationBase(listDogBaseRaw),
+    ...(await cleanInformation(listDogApiRaw)),
+  ];
 };
 
 const getAllDogs = async () => {};
@@ -111,6 +92,26 @@ const createDog = async ({
   const listTemperamentId = temperaments.map((t) => t.id);
   newDog.addTemperaments(listTemperamentId);
   return newDog;
+};
+
+const cleanInformationBase = (list) => {
+  return list.map(
+    ({ id, weight, height, name, life_span, image, temperaments, create }) => {
+      const newTemperaments = temperaments.map(
+        (temperament) => temperament.name
+      );
+      return {
+        id,
+        weight,
+        height,
+        name,
+        life_span,
+        image,
+        temperament: newTemperaments.join(","),
+        create,
+      };
+    }
+  );
 };
 
 const cleanInformation = async (list) => {
