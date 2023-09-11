@@ -17,10 +17,28 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [3, 100],
+        },
       },
-      weight: { type: DataTypes.STRING },
-      height: { type: DataTypes.STRING },
-      life_span: { type: DataTypes.STRING },
+      weight: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [1, 10],
+        },
+      },
+      height: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [1, 10],
+        },
+      },
+      life_span: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [6, 15],
+        },
+      },
       create: { type: DataTypes.BOOLEAN, defaultValue: true },
     },
     { timestamps: false }
