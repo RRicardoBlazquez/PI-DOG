@@ -44,7 +44,9 @@ const postDogHandler = async (req, res) => {
       temperament,
     });
     res.status(200).json(newDog);
-  } catch (error) {}
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
 };
 
 module.exports = {

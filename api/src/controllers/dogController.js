@@ -2,7 +2,9 @@ const { Dog, Temperament } = require("../db");
 const { Op } = require("sequelize");
 const axios = require("axios");
 const { setTemperament } = require("./temperamentController");
-const { URL_BASE, API_KEY } = process.env;
+const { URL_BASE, URL_IMAGE } = process.env;
+let loadTemperament = true;
+//const weightFormatRegex = /^\d+\s*-\s*\d+$/;
 
 const getDogId = async (isApi, id) => {
   const dogId = isApi ? await getDogIdApi(id) : await getDogIdBase(id);
@@ -44,7 +46,7 @@ const getDogName = async (name) => {
 
   return [
     ...cleanInformationBase(listDogBaseRaw),
-    ...(await cleanInformation(listDogApiRaw)),
+    ...cleanInformation(listDogApiRaw),
   ];
 };
 
@@ -56,11 +58,13 @@ const getAllDogs = async () => {
       through: { attributes: [] },
     },
   });
-
   const dogsApi = (await axios.get(`${URL_BASE}/breeds`)).data;
-  const listDogsApi = await cleanInformation(dogsApi);
+  if (loadTemperament) {
+    loadTemperament = false;
+    await dogsApi.map(async (r) => await setTemperament(r.temperament));
+  }
 
-  return [...cleanInformationBase(dogsBase), ...listDogsApi];
+  return [...cleanInformationBase(dogsBase), ...cleanInformation(dogsApi)];
 };
 
 const createDog = async ({
@@ -71,6 +75,16 @@ const createDog = async ({
   image,
   temperament,
 }) => {
+  if (
+    !(await dogValidate({
+      weight,
+      height,
+      name,
+      life_span,
+      image,
+    }))
+  )
+    throw new Error("Error date invalid");
   const newDog = await Dog.create({
     weight,
     height,
@@ -79,10 +93,24 @@ const createDog = async ({
     image,
   });
   let temperaments = await setTemperament(temperament);
-
-  const listTemperamentId = temperaments.map((t) => t.id);
-  newDog.addTemperaments(listTemperamentId);
+  if (temperaments) {
+    const listTemperamentId = temperaments.map((t) => t.id);
+    newDog.addTemperaments(listTemperamentId);
+  }
   return newDog;
+};
+
+const dogValidate = async ({ weight, height, name, life_span, image }) => {
+  let valido = true;
+  const dog = await Dog.findAll({
+    where: {
+      name: {
+        [Op.iLike]: `${name}`,
+      },
+    },
+  });
+  if (dog.length) return false;
+  return valido;
 };
 
 const getImageApi = async (reference_image_id) => {
@@ -120,7 +148,7 @@ const cleanInformation = (list) => {
       reference_image_id,
       temperament,
     }) => {
-      const image = `${URL_BASE}/images/${reference_image_id}.jpg`;
+      const image = `${URL_IMAGE}/${reference_image_id}.jpg`;
       return {
         id,
         weight: weight.metric,
