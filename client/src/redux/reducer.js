@@ -12,10 +12,14 @@ const initialState = {
 };
 
 const rootReducer = (state = initialState, action) => {
-  const { type, payload } = action;
-  switch (type) {
+  const { payload } = action;
+  switch (action.type) {
     case GET_DOGS:
-      return { ...state, dogFilter: payload, dogAll: payload };
+      return {
+        ...state,
+        dogFilter: [...action.payload],
+        dogAll: [...action.payload],
+      };
 
     case GET_NAME_DOGS:
       return { ...state, dogFilter: payload, dogAll: payload };
@@ -30,7 +34,7 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, dogFilter: payload, dogAll: payload };
 
     default:
-      break;
+      return { ...state };
   }
 };
 

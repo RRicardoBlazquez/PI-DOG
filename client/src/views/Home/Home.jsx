@@ -1,11 +1,16 @@
+import { useDispatch } from "react-redux";
 import CardsContainer from "../../components/CardsContainer/CardsContainner";
 import Filter from "../../components/Filter/Filter";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { useEffect } from "react";
+import { getDogs } from "../../redux/actions";
 
 export default function Home() {
-  //filtro
-  //search
-  //cardsContainer
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDogs());
+  }, []);
 
   return (
     <>
