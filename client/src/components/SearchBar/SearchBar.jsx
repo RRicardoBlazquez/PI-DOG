@@ -1,7 +1,12 @@
+import style from "./SearchBar.module.css";
+
 export default function SearchBar() {
   return (
     <div>
-      <h1>Aca va el buscador</h1>
+      <input className={style.input} type="text" placeholder="Search"></input>
+      <div>
+        <i className={style.search}></i>
+      </div>
     </div>
   );
 }

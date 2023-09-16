@@ -138,6 +138,7 @@ const cleanInformationBase = (list) => {
 };
 
 const cleanInformation = (list) => {
+  let image = "";
   return list.map(
     ({
       id,
@@ -148,7 +149,13 @@ const cleanInformation = (list) => {
       reference_image_id,
       temperament,
     }) => {
-      const image = `${URL_IMAGE}/${reference_image_id}.jpg`;
+      //15, 125 y 212
+      if (id === 15 || id === 125 || id === 212) {
+        image = `${URL_IMAGE}/${reference_image_id}.png`;
+      } else {
+        image = `${URL_IMAGE}/${reference_image_id}.jpg`;
+      }
+
       return {
         id,
         weight: weight.metric,

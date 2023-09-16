@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  background-color: rgb(247, 246, 244);
+  background-size: cover;
+  align-items: center;
+  flex-flow: row;
+  justify-content: space-around;
+}
+.containerPrevious {
+  display: flex;
+  padding: 5px 0px 5px 0px;
+  width: 100px;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+.containerNext {
+  display: flex;
+  padding: 5px 0px 5px 0px;
+  width: 100px;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+.containerPaginado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+}
+
+.containerPage {
+  display: flex;
+  align-items: center;
+}
+.paginado {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  min-width: 300px;
+  justify-content: center;
+  list-style: none;
+}
+
+.page {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  color: rgba(236, 234, 230, 1);
+  border-radius: 10px;
+  background-color: rgba(53, 25, 21, 1);
+  align-items: center;
+  border: 2px solid rgba(210, 142, 105, 1);
+}
+
+.pageCurrent {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  color: rgba(236, 234, 230, 1);
+  border-radius: 10px;
+  background-color: rgba(210, 142, 105, 1);
+  border: 2px solid rgba(210, 142, 105, 1);
+}

@@ -1,0 +1,25 @@
+.input {
+  outline: none;
+  box-sizing: border-box;
+  height: 60px;
+  width: 0;
+  padding: 0 20px;
+  color: black;
+  border-radius: 50px;
+  font-size: 20px;
+  border: 1px solid red;
+  transition: all 0.7s ease;
+}
+
+::placeholder {
+  color: aliceblue;
+}
+
+.search {
+  background-color: red;
+  line-height: 80px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.5s;
+}

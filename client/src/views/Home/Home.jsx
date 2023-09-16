@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import CardsContainer from "../../components/CardsContainer/CardsContainner";
+import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import Filter from "../../components/Filter/Filter";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getDogs());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

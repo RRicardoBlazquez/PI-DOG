@@ -1,9 +1,11 @@
 import Paginated from "../Paginated/Paginated";
 import Card from "../Card/Card";
 import { useSelector } from "react-redux";
-import style from "./CardsContainner.module.css";
+import style from "./CardsContainer.module.css";
+import { useState } from "react";
 export default function CardsContainer() {
   const dogFilter = useSelector((state) => state.dogFilter);
+  const [index, setIndex] = useState({ firt: 0, last: 8 });
 
   let listDogs = dogFilter
     .map((dog) => {
@@ -19,16 +21,15 @@ export default function CardsContainer() {
         </li>
       );
     })
-    .slice(0, 8);
+    .slice(index.firt, index.last);
   return (
     <div>
-      <Paginated />
+      <Paginated nPerPage={8} index={index} setIndex={setIndex} />
       {dogFilter ? (
-        <ul className={style.conteiner}>{listDogs}</ul>
+        <ul className={style.container}>{listDogs}</ul>
       ) : (
         <h1>cargando...</h1>
       )}
-      <Paginated />
     </div>
   );
 }

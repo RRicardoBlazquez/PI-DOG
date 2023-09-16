@@ -1,5 +1,13 @@
 .container {
-  background-color: aquamarine;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  min-height: 100vh;
+  background-image: url("../../image/perrosVarios.jpg");
   height: max-content;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: 100%;
 }
