@@ -150,11 +150,9 @@ const cleanInformation = (list) => {
       temperament,
     }) => {
       //15, 125 y 212
-      if (id === 15 || id === 125 || id === 212) {
-        image = `${URL_IMAGE}/${reference_image_id}.png`;
-      } else {
-        image = `${URL_IMAGE}/${reference_image_id}.jpg`;
-      }
+      id === 15 || id === 125 || id === 212
+        ? (image = `${URL_IMAGE}/${reference_image_id}.png`)
+        : (image = `${URL_IMAGE}/${reference_image_id}.jpg`);
 
       return {
         id,
