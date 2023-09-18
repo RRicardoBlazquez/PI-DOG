@@ -11,18 +11,17 @@ const initialState = {
   temperament: [],
 };
 
-const rootReducer = (state = initialState, action) => {
-  const { payload } = action;
-  switch (action.type) {
+const rootReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     case GET_DOGS:
       return {
         ...state,
-        dogFilter: [...action.payload],
-        dogAll: [...action.payload],
+        dogFilter: [...payload],
+        dogAll: [...payload],
       };
 
     case GET_NAME_DOGS:
-      return { ...state, dogFilter: payload, dogAll: payload };
+      return { ...state, dogFilter: payload };
 
     case GET_TEMPERAMENTS:
       return { ...state, dogFilter: payload, dogAll: payload };

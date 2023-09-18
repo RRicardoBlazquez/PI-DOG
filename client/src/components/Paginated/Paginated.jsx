@@ -15,8 +15,6 @@ function Paginated({ nPerPage, index, setIndex }) {
 
   useEffect(() => {
     setCantPage(pageSize);
-    console.log("use efect");
-    console.log(pageSize);
     current > cantPage ? setPage(1) : setPage(current);
   }, [pageSize]);
 
@@ -25,8 +23,6 @@ function Paginated({ nPerPage, index, setIndex }) {
     const nextPage =
       name === NEXT ? current + 1 : name === BACK ? current - 1 : current;
     setPage(nextPage);
-    console.log(nextPage);
-    console.log(name);
   };
 
   const handlerChange = (e) => {
