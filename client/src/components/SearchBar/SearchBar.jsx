@@ -19,21 +19,22 @@ export default function SearchBar() {
     setNameDog(value);
   };
 
-  const handlerButton = () => {
+  const handlerButton = (e) => {
+    e.preventDefault();
     nameDog && dispatch(getDogsByName(nameDog));
   };
 
   return (
-    <div>
+    <form>
       <input
         type="text"
         placeholder="Search"
         onChange={handlerChange}
         onKeyUp={handlerKeyUp}
       ></input>
-      <div onClick={handlerButton}>
-        <i className={style.search}>buscar</i>
-      </div>
-    </div>
+      <button onClick={handlerButton}>
+        <i className={style.search}>Buscar</i>
+      </button>
+    </form>
   );
 }

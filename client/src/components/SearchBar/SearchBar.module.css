@@ -16,6 +16,10 @@
 }
 
 .search {
+  width: 80px;
+  height: 60px;
+  background-image: url("https://w7.pngwing.com/pngs/253/919/png-transparent-dogs-pets-running-thumbnail.png");
+  background-size: 100%;
   background-color: red;
   line-height: 80px;
   border-radius: 50%;
