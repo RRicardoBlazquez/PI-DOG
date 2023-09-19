@@ -8,7 +8,7 @@ import {
   FILTER_TEMPERAMENTS,
 } from "./constFilter";
 import { useDispatch } from "react-redux";
-import { dogFilter, getDogs } from "../../redux/actions";
+import { dogFilter } from "../../redux/actions";
 const BASE_URL = import.meta.env.VITE_URL_BASE;
 
 export default function Filter() {
@@ -16,7 +16,7 @@ export default function Filter() {
   const { temperament, loading } = useTemperament(BASE_URL);
   const [filter, setFilter] = useState({
     filterCreated: ALL,
-    filterTemperament: [ALL],
+    filterTemperament: ALL,
   });
   const handlerChange = (eventFilter) => {
     const { name, value } = eventFilter.target;
@@ -27,11 +27,13 @@ export default function Filter() {
           : setFilter({ ...filter, filterCreated: value });
         break;
       case FILTER_TEMPERAMENTS:
+        if (filter.filterTemperament[0] === ALL)
+          setFilter({ ...filter, filterTemperament: [] });
         value === ALL
-          ? setFilter({ ...filter, filterTemperament: [ALL] })
+          ? setFilter({ ...filter, filterTemperament: ALL })
           : setFilter({
               ...filter,
-              filterTemperament: [...temperament, value],
+              filterTemperament: value,
             });
         break;
       default:
@@ -39,10 +41,9 @@ export default function Filter() {
     }
   };
 
-  const handlerSubmit = () => {
-    filter.filterCreated === ALL && filter.filterTemperament === ALL
-      ? dispatch(getDogs)
-      : dispatch(dogFilter(filter));
+  const handlerSubmit = (event) => {
+    event.preventDefault();
+    dispatch(dogFilter({ ...filter }));
   };
 
   return (

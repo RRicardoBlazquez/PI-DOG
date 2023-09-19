@@ -1,9 +1,9 @@
+import { ALL, API } from "../components/Filter/constFilter";
 import {
   GET_DOGS,
   GET_NAME_DOGS,
-  GET_FILTER_CREATE,
-  GET_FILTER_TEMPERAMENTS,
   GET_TEMPERAMENTS,
+  FILTER_DOG,
 } from "./constantesRedux";
 const initialState = {
   dogAll: [],
@@ -26,11 +26,26 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case GET_TEMPERAMENTS:
       return { ...state, dogFilter: payload, dogAll: payload };
 
-    case GET_FILTER_CREATE:
-      return { ...state, dogFilter: payload, dogAll: payload };
+    case FILTER_DOG: {
+      let dogsList =
+        payload.filterCreated === ALL
+          ? [...state.dogAll]
+          : state.dogAll.filter((dog) => {
+              return payload.filterCreated === API
+                ? dog.create === false
+                : dog.create === true;
+            });
 
-    case GET_FILTER_TEMPERAMENTS:
-      return { ...state, dogFilter: payload, dogAll: payload };
+      if (payload.filterTemperament !== ALL)
+        dogsList = dogsList.filter((dog) => {
+          return (
+            dog.temperament &&
+            dog.temperament.includes(payload.filterTemperament)
+          );
+        });
+
+      return { ...state, dogFilter: [...dogsList] };
+    }
 
     default:
       return { ...state };

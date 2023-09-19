@@ -15,7 +15,7 @@ function Paginated({ nPerPage, index, setIndex }) {
 
   useEffect(() => {
     setCantPage(pageSize);
-    current > cantPage ? setPage(1) : setPage(current);
+    current > pageSize ? setPage(1) : setPage(current);
   }, [pageSize]);
 
   //en caso de pasar a una pagina siguiente modifico index para mostrar los datos entre esos indices
@@ -47,7 +47,6 @@ function Paginated({ nPerPage, index, setIndex }) {
 
   function setPage(pagina) {
     let firtPage = pagina * nPerPage - nPerPage;
-    console.log(pagina * nPerPage);
     dogFilter.length < current * nPerPage
       ? setIndex({ ...index, firt: firtPage, last: dogFilter.length })
       : setIndex({ ...index, firt: firtPage, last: pagina * nPerPage });

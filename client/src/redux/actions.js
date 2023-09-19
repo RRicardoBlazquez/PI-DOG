@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_DOGS, GET_NAME_DOGS } from "./constantesRedux";
+import { FILTER_DOG, GET_DOGS, GET_NAME_DOGS } from "./constantesRedux";
 const BASE_URL = import.meta.env.VITE_URL_BASE;
 
 export const getDogs = () => {
@@ -22,4 +22,6 @@ export const getTemperaments = () => {};
 
 export const orderDogs = () => {};
 
-export const dogFilter = (filter) => {};
+export const dogFilter = (filter) => {
+  return { type: FILTER_DOG, payload: filter };
+};
