@@ -1,4 +1,4 @@
-import { ALL, API } from "../components/Filter/constFilter";
+import { ALL, API } from "../constantes/constantes";
 import {
   GET_DOGS,
   GET_NAME_DOGS,

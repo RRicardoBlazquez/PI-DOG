@@ -6,7 +6,7 @@ import {
   BASE,
   FILTER_CREATE,
   FILTER_TEMPERAMENTS,
-} from "./constFilter";
+} from "../../constantes/constantes";
 import { useDispatch } from "react-redux";
 import { dogFilter } from "../../redux/actions";
 const BASE_URL = import.meta.env.VITE_URL_BASE;
@@ -27,8 +27,6 @@ export default function Filter() {
           : setFilter({ ...filter, filterCreated: value });
         break;
       case FILTER_TEMPERAMENTS:
-        if (filter.filterTemperament[0] === ALL)
-          setFilter({ ...filter, filterTemperament: [] });
         value === ALL
           ? setFilter({ ...filter, filterTemperament: ALL })
           : setFilter({
@@ -48,37 +46,32 @@ export default function Filter() {
 
   return (
     <form>
-      <label>
-        Origin Dogs :
-        <select name={FILTER_CREATE} onChange={handlerChange}>
-          <option value={ALL}>All </option>
-          <option value={BASE}>Created </option>
-          <option value={API}>Api </option>
+      <fieldset>
+        <legend>Filter</legend>
+        <label>
+          Origin Dogs :
+          <select name={FILTER_CREATE} onChange={handlerChange}>
+            <option value={ALL}>All </option>
+            <option value={BASE}>Created </option>
+            <option value={API}>Api </option>
+          </select>
+        </label>
+        <label> Temperament : </label>
+        <select name={FILTER_TEMPERAMENTS} onChange={handlerChange}>
+          <option value={ALL}>All</option>
+          {loading
+            ? "Loading..."
+            : temperament.map((t, index) => (
+                <option key={index} value={t}>
+                  {t}
+                </option>
+              ))}
         </select>
-      </label>
-      <label> Temperament : </label>
-      <select name={FILTER_TEMPERAMENTS} onChange={handlerChange}>
-        <option value={ALL}>All</option>
-        {loading
-          ? "Loading..."
-          : temperament.map((t, index) => (
-              <option key={index} value={t}>
-                {t}
-              </option>
-            ))}
-      </select>
-      <button type="submit" onClick={handlerSubmit}>
-        Filter
-      </button>
-      <button>Cancel</button>
+        <button type="submit" onClick={handlerSubmit}>
+          Filter
+        </button>
+        <button>Cancel</button>
+      </fieldset>
     </form>
   );
-}
-
-{
-  /* <select name="order">
-  <option value="default">Default</option>
-  <option value="alphabet">Alphabet</option>
-  <option value="weight">Weight</option>
-</select>; */
 }

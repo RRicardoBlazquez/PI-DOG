@@ -1,5 +1,13 @@
 @import "./normalize.css";
 
+:root {
+  --bistre: #452717ff;
+  --fondo: rgba(208, 202, 192, 0.765);
+  --fondoButton: #cabbacff;
+  --marron: #463529ff;
+  --letras: #212120ff;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -10,7 +18,7 @@ a:hover {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2em;
   line-height: 1.1;
 }
 

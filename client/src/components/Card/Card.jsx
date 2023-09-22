@@ -1,14 +1,27 @@
 import style from "./Card.module.css";
+import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export default function Card({ name, image, temperament, weight }) {
+function Card({ id, name, image, temperament, weight }) {
   return (
     <div className={style.container}>
       <picture className={style.containerImage}>
-        <img className={style.containerImage} src={image} alt="" />
+        <NavLink to={`/detail/${id}`}>
+          <img className={style.imagen} src={image} alt="" />
+        </NavLink>
       </picture>
-      <h1>{name}</h1>
+      <h3 className={style.name}>{name}</h3>
       <p>{weight} kg</p>
       <p>{temperament} </p>
     </div>
   );
 }
+Card.propTypes = {
+  id: PropTypes.any,
+  name: PropTypes.string,
+  image: PropTypes.string,
+  temperament: PropTypes.string,
+  weight: PropTypes.string,
+};
+
+export default Card;

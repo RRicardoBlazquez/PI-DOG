@@ -47,7 +47,7 @@ function Paginated({ nPerPage, index, setIndex }) {
 
   function setPage(pagina) {
     let firtPage = pagina * nPerPage - nPerPage;
-    dogFilter.length < current * nPerPage
+    dogFilter.length < pagina * nPerPage
       ? setIndex({ ...index, firt: firtPage, last: dogFilter.length })
       : setIndex({ ...index, firt: firtPage, last: pagina * nPerPage });
     setCurrent(pagina);
@@ -57,15 +57,19 @@ function Paginated({ nPerPage, index, setIndex }) {
     <div>
       <button
         disabled={INIT === current ? true : false}
-        className={INIT === current ? style.disable : style.page}
+        className={INIT === current ? style.disable : style.containerButton}
         onClick={() => handlerButton(BACK)}
       >
         BACK
       </button>
-      <ul className={style.container}>{listPage}</ul>
+      {listPage ? (
+        <ul className={style.container}>{listPage}</ul>
+      ) : (
+        <h1>Loading...</h1>
+      )}
       <button
         disabled={cantPage === current ? true : false}
-        className={cantPage === current ? style.disable : style.page}
+        className={cantPage === current ? style.disable : style.containerButton}
         onClick={() => handlerButton(NEXT)}
       >
         NEXT
