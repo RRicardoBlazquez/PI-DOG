@@ -1,5 +1,6 @@
 export const validate = ({ name, weight, height, life_span, image }) => {
   const regex = /^\d{2}$|^\d{1,2}\s-\s\d{1,2}$/;
+  //const yearsFormat = /^(\d{1,2}(\s-\s\d{1,2})?\syears)$/;
   const errors = {};
   if (name.length < 5 || name.length > 100) {
     errors.name = "The name must have more than 5 characters and less than 100";

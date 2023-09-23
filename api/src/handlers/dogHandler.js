@@ -39,7 +39,7 @@ const postDogHandler = async (req, res) => {
       weight,
       height,
       name,
-      life_span,
+      life_span: life_span + " years",
       image,
       temperament,
     });

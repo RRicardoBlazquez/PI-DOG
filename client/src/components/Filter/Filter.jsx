@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useTemperament } from "../../hooks/useTemperament";
 import {
   ALL,
   API,
@@ -9,11 +8,10 @@ import {
 } from "../../constantes/constantes";
 import { useDispatch } from "react-redux";
 import { dogFilter } from "../../redux/actions";
-const BASE_URL = import.meta.env.VITE_URL_BASE;
+import Temperament from "../Temperament/Temperament";
 
 export default function Filter() {
   const dispatch = useDispatch();
-  const { temperament, loading } = useTemperament(BASE_URL);
   const [filter, setFilter] = useState({
     filterCreated: ALL,
     filterTemperament: ALL,
@@ -57,16 +55,7 @@ export default function Filter() {
           </select>
         </label>
         <label> Temperament : </label>
-        <select name={FILTER_TEMPERAMENTS} onChange={handlerChange}>
-          <option value={ALL}>All</option>
-          {loading
-            ? "Loading..."
-            : temperament.map((t, index) => (
-                <option key={index} value={t}>
-                  {t}
-                </option>
-              ))}
-        </select>
+        <Temperament handlerTemperament={handlerChange} />
         <button type="submit" onClick={handlerSubmit}>
           Filter
         </button>
