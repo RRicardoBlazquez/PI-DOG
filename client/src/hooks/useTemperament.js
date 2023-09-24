@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 export const useTemperament = (url) => {
   const [temperament, setTemperament] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useMemo(() => {
     axios.get(`${url}temperament/`).then(({ data }) => {
       setTemperament(data);
       setLoading(false);
