@@ -18,7 +18,13 @@ export const getDogsByName = (name) => {
   };
 };
 
-export const getTemperaments = () => {};
+export const getTemperaments = () => {
+  return async function (dispatch) {
+    const apiData = await axios(`${BASE_URL}temperament/`);
+    let dogsList = apiData.data;
+    dispatch({ type: GET_DOGS, payload: dogsList });
+  };
+};
 
 export const orderDogs = () => {};
 

@@ -24,7 +24,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return { ...state, dogFilter: payload };
 
     case GET_TEMPERAMENTS:
-      return { ...state, dogFilter: payload, dogAll: payload };
+      return { ...state, temperament: payload };
 
     case FILTER_DOG: {
       let dogsList =

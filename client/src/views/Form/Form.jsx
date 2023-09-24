@@ -7,6 +7,7 @@ const BASE_URL = import.meta.env.VITE_URL_BASE;
 
 export default function Form() {
   const [ready, setReady] = useState(false);
+  let viewDog = {};
   const [newDog, setNewDog] = useState({
     name: "",
     weight: "",
@@ -43,8 +44,9 @@ export default function Form() {
     if (Object.keys(validate(newDog)).length === 0) {
       axios
         .post(`${BASE_URL}dog`, { ...newDog })
-        .then((response) => {
+        .then(({ data }) => {
           alert("The breed was successfully created");
+          viewDog = { ...data };
           setReady(true);
           setErrors({});
         })
@@ -74,15 +76,18 @@ export default function Form() {
     <form>
       <ul>{listForm}</ul>
       <Temperament handlerTemperament={handlerTemperament} />
-      <button type="submit" onClick={handlerSubmit}>
+      <button disabled={ready} type="submit" onClick={handlerSubmit}>
         Create
       </button>
-      <Card
-        name={newDog.name}
-        image={newDog.image}
-        weight={"00"}
-        temperament={newDog.temperament}
-      />
+      {ready && (
+        <Card
+          id={viewDog.id}
+          name={viewDog.name}
+          image={viewDog.image}
+          weight={viewDog.weight}
+          temperament={viewDog.temperament}
+        />
+      )}
     </form>
   );
 }
