@@ -6,12 +6,12 @@
   color: black;
   border-radius: 50px;
   font-size: 20px;
-  border: 1px solid red;
+  border: 1px solid var(--borde);
   transition: all 0.7s ease;
 }
 
 ::placeholder {
-  color: aliceblue;
+  color: rgb(246, 156, 78);
 }
 
 .button {

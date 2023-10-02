@@ -9,6 +9,7 @@ function Formulario({ newDog, changeHandler, errors }) {
           <li key={index}>
             <h3>{prop.charAt(0).toUpperCase() + prop.slice(1)}</h3>
             <input
+              className={style.input}
               type={"text"}
               name={prop}
               value={newDog[prop]}

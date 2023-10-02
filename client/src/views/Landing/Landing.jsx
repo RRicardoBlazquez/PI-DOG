@@ -4,9 +4,12 @@ import style from "./Landing.module.css";
 export default function Landing() {
   return (
     <div className={style.container}>
-      <NavLink to={"/home"}>
-        <button>ingresar</button>
-      </NavLink>
+      <div className={style.containerButton}>
+        <h1>Dogs</h1>
+        <NavLink to={"/home"}>
+          <button className={style.button}>Start</button>
+        </NavLink>
+      </div>
     </div>
   );
 }

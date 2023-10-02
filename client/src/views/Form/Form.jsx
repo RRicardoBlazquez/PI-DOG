@@ -41,13 +41,23 @@ export default function Form() {
   };
   const handlerTemperament = (event) => {
     const { value } = event.target;
-    if (!includesTemperament(value))
-      newDog.temperament.length === 0
-        ? setNewDog({ ...newDog, temperament: value })
-        : setNewDog({
-            ...newDog,
-            temperament: newDog.temperament + "," + value,
-          });
+    if (newDog.temperament.split(",").length > 7) return;
+    if (includesTemperament(value)) return;
+    if (newDog.temperament.length === 0) {
+      setNewDog({ ...newDog, temperament: value });
+      setErrors(validate({ ...newDog, temperament: value }));
+    } else {
+      setNewDog({
+        ...newDog,
+        temperament: newDog.temperament + "," + value,
+      });
+      setErrors(
+        validate({
+          ...newDog,
+          temperament: newDog.temperament + "," + value,
+        })
+      );
+    }
   };
   function includesTemperament(newTemperament) {
     let listTemperaments = newDog.temperament.split(",").map((t) => t.trim());
@@ -76,9 +86,8 @@ export default function Form() {
         return temp !== value;
       })
       .join(",");
-    console.log(newDog.temperament);
-    console.log(newList);
     setNewDog({ ...newDog, temperament: newList });
+    setErrors(validate({ ...newDog, temperament: newList }));
   }
 
   return (
@@ -91,6 +100,7 @@ export default function Form() {
         />
         <div>
           <Temperament handlerTemperament={handlerTemperament} />
+          {errors["temperament"] && <span>{errors["temperament"]}</span>}
           <ul>
             {newDog.temperament.length !== 0 &&
               newDog.temperament.split(",").map((temp, index) => {

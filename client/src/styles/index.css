@@ -2,10 +2,11 @@
 
 :root {
   --bistre: #452717ff;
-  --fondo: rgba(208, 202, 192, 0.765);
+  --fondo: rgba(208, 202, 192, 0.438);
   --fondoButton: #cabbacff;
   --marron: #463529ff;
   --letras: #212120ff;
+  --borde: rgba(210, 142, 105, 1);
 }
 
 ul {

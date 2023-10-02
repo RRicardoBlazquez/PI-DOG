@@ -1,4 +1,11 @@
-export const validate = ({ name, weight, height, life_span, image }) => {
+export const validate = ({
+  name,
+  weight,
+  height,
+  life_span,
+  image,
+  temperament,
+}) => {
   let errors = {};
   if (name.length < 5 || name.length > 100) {
     errors.name = "The name must have more than 5 characters and less than 100";
@@ -18,6 +25,12 @@ export const validate = ({ name, weight, height, life_span, image }) => {
 
   if (!/.(gif|jpeg|jpg|png)$/i.test(image))
     errors.image = "Check that the formats are .gif, .jpeg, .jpg y .png";
+
+  if (temperament === "")
+    errors.temperament = "select at least one temperament";
+
+  if (temperament !== "" && temperament.split(",").length > 6)
+    errors.temperament = "You can only select up to 6 temperaments";
 
   return errors;
 };
