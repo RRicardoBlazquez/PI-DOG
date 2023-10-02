@@ -53,7 +53,6 @@ export default function Form() {
     let listTemperaments = newDog.temperament.split(",").map((t) => t.trim());
     return listTemperaments.includes(newTemperament);
   }
-
   const handlerSubmit = (event) => {
     event.preventDefault();
     setErrors(validate(newDog));
@@ -70,6 +69,18 @@ export default function Form() {
     } else alert("Error complete the form correctly");
   };
 
+  function deleteTemperament(value) {
+    const newList = newDog.temperament
+      .split(",")
+      .filter((temp) => {
+        return temp !== value;
+      })
+      .join(",");
+    console.log(newDog.temperament);
+    console.log(newList);
+    setNewDog({ ...newDog, temperament: newList });
+  }
+
   return (
     <div className={style.container}>
       <form className={style.form}>
@@ -78,7 +89,24 @@ export default function Form() {
           changeHandler={changeHandler}
           errors={errors}
         />
-        <Temperament handlerTemperament={handlerTemperament} />
+        <div>
+          <Temperament handlerTemperament={handlerTemperament} />
+          <ul>
+            {newDog.temperament.length !== 0 &&
+              newDog.temperament.split(",").map((temp, index) => {
+                return (
+                  <li key={index}>
+                    <button
+                      type="button"
+                      onClick={() => deleteTemperament(temp)}
+                    >
+                      {temp}
+                    </button>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
         <button disabled={ready} type="submit" onClick={handlerSubmit}>
           Create
         </button>
