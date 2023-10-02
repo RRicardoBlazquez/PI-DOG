@@ -31,8 +31,9 @@ export default function SearchBar() {
         placeholder="Search"
         onChange={handlerChange}
         onKeyUp={handlerKeyUp}
+        className={style.input}
       ></input>
-      <button onClick={handlerButton}>
+      <button className={style.button} onClick={handlerButton}>
         <i className={style.search}>Buscar</i>
       </button>
     </form>

@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { validate } from "./validation";
+import { cleanNewDog, validate } from "./validation";
 import Temperament from "../../components/Temperament/Temperament";
 import axios from "axios";
-import Card from "../../components/Card/Card";
+import style from "./Form.module.css";
+import imagen from "../../image/huellas.png";
+import Formulario from "../../components/Formulario/Formulario";
 const BASE_URL = import.meta.env.VITE_URL_BASE;
 
 export default function Form() {
   const [ready, setReady] = useState(false);
-  let viewDog = {};
   const [newDog, setNewDog] = useState({
     name: "",
-    weight: "",
-    height: "",
-    life_span: "",
+    weight: { min: "", max: "" },
+    height: { min: "", max: "" },
+    life_span: { min: "", max: "" },
     image: "",
     temperament: "",
   });
@@ -20,8 +21,23 @@ export default function Form() {
 
   const changeHandler = (event) => {
     let { name, value } = event.target;
-    setErrors(validate({ ...newDog, [name]: value }));
-    setNewDog({ ...newDog, [name]: value });
+    if (name === "name" || name === "image" || name === "temperament") {
+      setErrors(validate({ ...newDog, [name]: value }));
+      setNewDog({ ...newDog, [name]: value });
+    } else {
+      let prop = name.split(".");
+
+      setErrors(
+        validate({
+          ...newDog,
+          [prop[0]]: { ...newDog[prop[0]], [prop[1]]: value },
+        })
+      );
+      setNewDog({
+        ...newDog,
+        [prop[0]]: { ...newDog[prop[0]], [prop[1]]: value },
+      });
+    }
   };
   const handlerTemperament = (event) => {
     const { value } = event.target;
@@ -41,12 +57,12 @@ export default function Form() {
   const handlerSubmit = (event) => {
     event.preventDefault();
     setErrors(validate(newDog));
+    let dog = cleanNewDog(newDog);
     if (Object.keys(validate(newDog)).length === 0) {
       axios
-        .post(`${BASE_URL}dog`, { ...newDog })
-        .then(({ data }) => {
+        .post(`${BASE_URL}dog`, { ...dog })
+        .then(() => {
           alert("The breed was successfully created");
-          viewDog = { ...data };
           setReady(true);
           setErrors({});
         })
@@ -54,40 +70,26 @@ export default function Form() {
     } else alert("Error complete the form correctly");
   };
 
-  let listForm = Object.keys(newDog)
-    .map((prop, index) => {
-      return (
-        <li key={index}>
-          <label>{prop.charAt(0).toUpperCase() + prop.slice(1)}</label>
-          <input
-            type={"text"}
-            name={prop}
-            value={newDog[prop]}
-            placeholder={`${prop}...`}
-            onChange={changeHandler}
-          />
-          {errors[prop] && <span>{errors[prop]}</span>}
-        </li>
-      );
-    })
-    .slice(0, 5);
-
   return (
-    <form>
-      <ul>{listForm}</ul>
-      <Temperament handlerTemperament={handlerTemperament} />
-      <button disabled={ready} type="submit" onClick={handlerSubmit}>
-        Create
-      </button>
-      {ready && (
-        <Card
-          id={viewDog.id}
-          name={viewDog.name}
-          image={viewDog.image}
-          weight={viewDog.weight}
-          temperament={viewDog.temperament}
+    <div className={style.container}>
+      <form className={style.form}>
+        <Formulario
+          newDog={newDog}
+          changeHandler={changeHandler}
+          errors={errors}
         />
-      )}
-    </form>
+        <Temperament handlerTemperament={handlerTemperament} />
+        <button disabled={ready} type="submit" onClick={handlerSubmit}>
+          Create
+        </button>
+      </form>
+      <picture className={style.picture}>
+        {newDog.image.length === 0 ? (
+          <img className={style.image} src={imagen} alt="Image new dog" />
+        ) : (
+          <img className={style.image} src={newDog.image} alt="Image new dog" />
+        )}
+      </picture>
+    </div>
   );
 }

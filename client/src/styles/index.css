@@ -8,13 +8,17 @@
   --letras: #212120ff;
 }
 
+ul {
+  list-style: none;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--letras);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--letras);
 }
 
 h1 {
@@ -34,7 +38,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--bistre);
 }
 button:focus,
 button:focus-visible {

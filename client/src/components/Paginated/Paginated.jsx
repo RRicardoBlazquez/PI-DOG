@@ -6,12 +6,11 @@ const NEXT = "NEXT";
 const BACK = "BACK";
 const INIT = 1;
 
-function Paginated({ nPerPage, index, setIndex }) {
+function Paginated({ nPerPage, index, setIndex, current, setCurrent }) {
   //utilizo el dogFilter para tener la cantidad de razas a mostrar
   const dogFilter = useSelector((state) => state.dogFilter);
   const pageSize = Math.ceil(dogFilter.length / nPerPage);
   const [cantPage, setCantPage] = useState();
-  const [current, setCurrent] = useState(1);
 
   useEffect(() => {
     setCantPage(pageSize);
@@ -82,6 +81,8 @@ Paginated.propTypes = {
   nPerPage: PropTypes.number,
   index: PropTypes.object,
   setIndex: PropTypes.func,
+  current: PropTypes.number,
+  setCurrent: PropTypes.func,
 };
 
 export default Paginated;

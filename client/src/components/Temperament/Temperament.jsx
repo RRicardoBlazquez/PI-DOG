@@ -25,7 +25,7 @@ function Temperament({ handlerTemperament }) {
 
   return (
     <select name={FILTER_TEMPERAMENTS} onChange={handlerTemperament}>
-      <option value={ALL}>Default</option>
+      <option value={ALL}>None</option>
       {loading(temperaments) ? "Loading..." : listTemperament}
     </select>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ALL,
   API,
@@ -6,31 +6,38 @@ import {
   FILTER_CREATE,
   FILTER_TEMPERAMENTS,
 } from "../../constantes/constantes";
-import { useDispatch } from "react-redux";
-import { dogFilter } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFilterTemperament,
+  deleteAllFilterTemperament,
+  dogFilter,
+} from "../../redux/actions";
 import Temperament from "../Temperament/Temperament";
+import style from "./Filter.module.css";
 
 export default function Filter() {
   const dispatch = useDispatch();
+  const filterTemperament = useSelector((state) => state.filterTemperament);
   const [filter, setFilter] = useState({
-    filterCreated: ALL,
-    filterTemperament: ALL,
+    created: ALL,
+    temperament: ALL,
   });
+
+  useEffect(() => {
+    return () => {
+      dispatch(deleteAllFilterTemperament());
+    };
+  }, []);
+
   const handlerChange = (eventFilter) => {
     const { name, value } = eventFilter.target;
     switch (name) {
       case FILTER_CREATE:
-        value === ALL
-          ? setFilter({ ...filter, filterCreated: ALL })
-          : setFilter({ ...filter, filterCreated: value });
+        setFilter({ ...filter, created: value });
         break;
       case FILTER_TEMPERAMENTS:
-        value === ALL
-          ? setFilter({ ...filter, filterTemperament: ALL })
-          : setFilter({
-              ...filter,
-              filterTemperament: value,
-            });
+        setFilter({ ...filter, temperament: value });
+        if (value !== ALL) dispatch(addFilterTemperament(value));
         break;
       default:
         break;
@@ -41,9 +48,23 @@ export default function Filter() {
     event.preventDefault();
     dispatch(dogFilter({ ...filter }));
   };
+  const handlerDelete = () => {
+    setFilter({ ...filter, created: ALL, temperament: ALL });
+    dispatch(deleteAllFilterTemperament());
+    dispatch(
+      dogFilter({
+        created: ALL,
+        temperament: ALL,
+      })
+    );
+  };
+
+  let listSelect = filterTemperament.map((temp, index) => {
+    return <li key={index}>{temp}</li>;
+  });
 
   return (
-    <form>
+    <form className={style.container}>
       <fieldset>
         <legend>Filter</legend>
         <label>
@@ -59,7 +80,8 @@ export default function Filter() {
         <button type="submit" onClick={handlerSubmit}>
           Filter
         </button>
-        <button>Cancel</button>
+        <button onClick={handlerDelete}>Cancel</button>
+        <ul>{listSelect.length != 0 && listSelect}</ul>
       </fieldset>
     </form>
   );
