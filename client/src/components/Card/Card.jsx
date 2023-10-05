@@ -11,8 +11,19 @@ function Card({ id, name, image, temperament, weight }) {
         </NavLink>
       </picture>
       <h3 className={style.name}>{name}</h3>
-      <p>{weight} kg</p>
-      <p>{temperament} </p>
+      <div className={style.info}>
+        <div className={style.containerTemperament}>
+          {temperament &&
+            temperament.split(",").map((temp, index) => {
+              return (
+                <span className={style.temperament} key={index}>
+                  {temp.trim()}
+                </span>
+              );
+            })}
+        </div>
+        <p className={style.weight}>Weight: {weight} kg</p>
+      </div>
     </div>
   );
 }

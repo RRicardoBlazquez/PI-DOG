@@ -53,7 +53,7 @@ function Paginated({ nPerPage, index, setIndex, current, setCurrent }) {
   }
 
   return (
-    <div>
+    <div className={style.container}>
       <button
         disabled={INIT === current ? true : false}
         className={INIT === current ? style.disable : style.containerButton}
@@ -62,7 +62,7 @@ function Paginated({ nPerPage, index, setIndex, current, setCurrent }) {
         BACK
       </button>
       {listPage ? (
-        <ul className={style.container}>{listPage}</ul>
+        <div className={style.paginado}>{listPage}</div>
       ) : (
         <h1>Loading...</h1>
       )}

@@ -34,12 +34,12 @@ export default function CardsContainer() {
     })
     .slice(index.firt, index.last);
   return (
-    <div>
+    <div className={style.container}>
       <Filter />
       <Order aux={aux} setAux={setAux} />
       <ShowFilter />
       {dogFilter ? (
-        <ul className={style.container}>{listDogs}</ul>
+        <ul className={style.containerCards}>{listDogs}</ul>
       ) : (
         <h1>Loading...</h1>
       )}

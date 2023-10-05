@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cleanNewDog, validate } from "./validation";
 import Temperament from "../../components/Temperament/Temperament";
 import axios from "axios";
@@ -8,7 +8,7 @@ import Formulario from "../../components/Formulario/Formulario";
 const BASE_URL = import.meta.env.VITE_URL_BASE;
 
 export default function Form() {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(true);
   const [newDog, setNewDog] = useState({
     name: "",
     weight: { min: "", max: "" },
@@ -18,6 +18,10 @@ export default function Form() {
     temperament: "",
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(validate(newDog)).length === 0) setReady(false);
+  }, [newDog]);
 
   const changeHandler = (event) => {
     let { name, value } = event.target;
@@ -100,14 +104,17 @@ export default function Form() {
         />
         <div>
           <Temperament handlerTemperament={handlerTemperament} />
-          {errors["temperament"] && <span>{errors["temperament"]}</span>}
-          <ul>
+          {errors["temperament"] && (
+            <span className={style.error}>{errors["temperament"]}</span>
+          )}
+          <div className={style.containerTemperament}>
             {newDog.temperament.length !== 0 &&
               newDog.temperament.split(",").map((temp, index) => {
                 return (
                   <li key={index}>
                     <button
                       type="button"
+                      className={style.button}
                       onClick={() => deleteTemperament(temp)}
                     >
                       {temp}
@@ -115,7 +122,7 @@ export default function Form() {
                   </li>
                 );
               })}
-          </ul>
+          </div>
         </div>
         <button disabled={ready} type="submit" onClick={handlerSubmit}>
           Create

@@ -3,6 +3,7 @@ import { ALL, ALPHABET, DEFAULT, WEIGHT } from "../../constantes/constantes";
 import PropTypes from "prop-types";
 import { orderDogs } from "../../redux/actions";
 import { useState } from "react";
+import style from "./Order.module.css";
 
 function Order({ aux, setAux }) {
   const [order, setOrder] = useState(DEFAULT);
@@ -27,8 +28,8 @@ function Order({ aux, setAux }) {
   };
   return (
     <form>
-      <fieldset>
-        <legend>Order</legend>
+      <section className={style.container}>
+        <h2>Order</h2>
         <select onChange={handlerChange} name="order">
           <option value={DEFAULT}>Default</option>
           <option value={ALPHABET}>Alphabet</option>
@@ -45,7 +46,7 @@ function Order({ aux, setAux }) {
             </option>
           </select>
         )}
-      </fieldset>
+      </section>
     </form>
   );
 }

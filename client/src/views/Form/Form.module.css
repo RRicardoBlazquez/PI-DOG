@@ -45,3 +45,32 @@
 .range {
   width: 3rem;
 }
+
+.error {
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.containerTemperament {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 30px;
+  margin: 5px;
+  color: rgba(236, 234, 230, 1);
+  border-radius: 10px;
+  background-color: rgba(53, 25, 21, 1);
+  border: 2px solid rgba(210, 142, 105, 1);
+}

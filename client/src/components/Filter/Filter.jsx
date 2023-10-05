@@ -64,9 +64,9 @@ export default function Filter() {
   });
 
   return (
-    <form className={style.container}>
-      <fieldset>
-        <legend>Filter</legend>
+    <form className={style.containerGeneral}>
+      <section className={style.container}>
+        <h2>Filter</h2>
         <label>
           Origin Dogs :
           <select name={FILTER_CREATE} onChange={handlerChange}>
@@ -75,14 +75,21 @@ export default function Filter() {
             <option value={API}>Api </option>
           </select>
         </label>
-        <label> Temperament : </label>
-        <Temperament handlerTemperament={handlerChange} />
-        <button type="submit" onClick={handlerSubmit}>
-          Filter
-        </button>
-        <button onClick={handlerDelete}>Cancel</button>
-        <ul>{listSelect.length != 0 && listSelect}</ul>
-      </fieldset>
+        <label>
+          {" "}
+          Temperament :
+          <Temperament handlerTemperament={handlerChange} />
+        </label>
+        <div className={style.containerButton}>
+          <button type="submit" onClick={handlerSubmit}>
+            Filter
+          </button>
+          <button onClick={handlerDelete}>Cancel</button>
+        </div>
+        <ul className={style.listTemperament}>
+          {listSelect.length !== 0 && listSelect}
+        </ul>
+      </section>
     </form>
   );
 }

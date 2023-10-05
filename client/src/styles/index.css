@@ -2,15 +2,20 @@
 
 :root {
   --bistre: #452717ff;
-  --fondo: rgba(208, 202, 192, 0.438);
+  --fondo: rgba(70, 53, 41, 0.539);
   --fondoButton: #cabbacff;
   --marron: #463529ff;
   --letras: #212120ff;
+  --letraP: white;
   --borde: rgba(210, 142, 105, 1);
+  --aux: rgba(208, 202, 192, 0.523);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 ul {
   list-style: none;
+  font-size: 1em;
+  color: var(--letraP);
 }
 
 a {
@@ -25,8 +30,18 @@ a:hover {
 h1 {
   font-size: 2em;
   line-height: 1.1;
+  color: white;
+}
+h2 {
+  font-size: 1.5em;
+  line-height: 1.1;
+  color: white;
 }
 
+label {
+  font-size: 1em;
+  color: var(--letraP);
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;

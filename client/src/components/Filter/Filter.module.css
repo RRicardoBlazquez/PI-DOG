@@ -1,3 +1,25 @@
-.container {
+.containerGeneral {
+  width: 100%;
   background-color: var(--fondo);
+}
+
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.listTemperament {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.containerButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 300px;
 }

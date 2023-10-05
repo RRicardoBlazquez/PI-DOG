@@ -6,8 +6,8 @@ function Formulario({ newDog, changeHandler, errors }) {
     .map((prop, index) => {
       if (prop === "name" || prop === "image") {
         return (
-          <li key={index}>
-            <h3>{prop.charAt(0).toUpperCase() + prop.slice(1)}</h3>
+          <li key={index} className={style.containerInput}>
+            <h3>{prop.charAt(0).toUpperCase() + prop.slice(1) + " : "}</h3>
             <input
               className={style.input}
               type={"text"}
@@ -16,13 +16,15 @@ function Formulario({ newDog, changeHandler, errors }) {
               placeholder={`${prop}...`}
               onChange={changeHandler}
             />
-            {errors[prop] && <span>{errors[prop]}</span>}
+            {errors[prop] && (
+              <span className={style.error}>{errors[prop]}</span>
+            )}
           </li>
         );
       } else {
         return (
-          <li key={index}>
-            <h3>{prop.charAt(0).toUpperCase() + prop.slice(1)}</h3>
+          <li key={index} className={style.containerInput}>
+            <h3>{prop.charAt(0).toUpperCase() + prop.slice(1) + " : "}</h3>
             <span>Min</span>
             <input
               className={style.range}
@@ -41,7 +43,9 @@ function Formulario({ newDog, changeHandler, errors }) {
               placeholder={`${prop}...`}
               onChange={changeHandler}
             />
-            {errors[prop] && <span>{errors[prop]}</span>}
+            {errors[prop] && (
+              <span className={style.error}>{errors[prop]}</span>
+            )}
           </li>
         );
       }
