@@ -18,6 +18,7 @@ import style from "./Filter.module.css";
 export default function Filter() {
   const dispatch = useDispatch();
   const filterTemperament = useSelector((state) => state.filterTemperament);
+  const filterOrigin = useSelector((state) => state.filterOrigin);
   const [filter, setFilter] = useState({
     created: ALL,
     temperament: ALL,
@@ -69,7 +70,11 @@ export default function Filter() {
         <h2>Filter</h2>
         <label>
           Origin Dogs :
-          <select name={FILTER_CREATE} onChange={handlerChange}>
+          <select
+            name={FILTER_CREATE}
+            onChange={handlerChange}
+            defaultValue={filterOrigin ? filterOrigin : ALL}
+          >
             <option value={ALL}>All </option>
             <option value={BASE}>Created </option>
             <option value={API}>Api </option>
@@ -84,7 +89,7 @@ export default function Filter() {
           <button type="submit" onClick={handlerSubmit}>
             Filter
           </button>
-          <button onClick={handlerDelete}>Cancel</button>
+          <button onClick={handlerDelete}>Clean</button>
         </div>
         <ul className={style.listTemperament}>
           {listSelect.length !== 0 && listSelect}

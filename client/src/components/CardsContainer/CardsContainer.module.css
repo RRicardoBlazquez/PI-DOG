@@ -6,11 +6,3 @@
   list-style: none;
   width: 100%;
 }
-
-.containerCards {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  min-width: 350px;
-  width: 100%;
-}

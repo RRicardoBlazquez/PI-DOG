@@ -1,0 +1,19 @@
+{
+  "auto-rename-tag.activationOnLanguage": ["*"],
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "editor.minimap.enabled": false,
+  "editor.wordWrap": "on",
+  "files.autoSave": "onFocusChange",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.glyphMargin": false,
+  "liveServer.settings.donotVerifyTags": true,
+  "workbench.colorTheme": "One Dark Pro Mix",
+  "workbench.sideBar.location": "right",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "window.zoomLevel": 1,
+  "breadcrumbs.enabled": false,
+  "editor.cursorSmoothCaretAnimation": "on"
+}

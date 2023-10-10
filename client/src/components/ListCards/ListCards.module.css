@@ -1,0 +1,12 @@
+.containerCards {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  min-width: 350px;
+  width: 100%;
+}
+.imagen {
+  display: flex;
+  width: 50%;
+  height: auto;
+}

@@ -1,4 +1,4 @@
-import { ALL, API } from "../constantes/constantes";
+import { ALL, ALPHABET, API, DEFAULT, WEIGHT } from "../constantes/constantes";
 import {
   GET_DOGS,
   GET_NAME_DOGS,
@@ -15,7 +15,9 @@ const initialState = {
   dogFilter: [],
   temperament: [],
   filterTemperament: [],
+  filterOrigin: "ALL",
   showFilter: [],
+  orderDogs: { order: DEFAULT, typeOrder: ALL },
 };
 function getPeso(peso) {
   if (peso === "NaN" || peso === undefined) {
@@ -64,6 +66,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
           payload.temperament === ALL ? [] : [...state.filterTemperament],
         showFilter:
           payload.temperament === ALL ? [] : [...state.filterTemperament],
+        filterOrigin: payload.created,
       };
     }
     case ADD_FILTER_TEMPERAMENT:
@@ -80,6 +83,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         filterTemperament: [...listTemperament],
+        showFilter: [...listTemperament],
       };
     }
     case DELETE_ALL_FILTER_TEMPERAMENT: {
@@ -94,7 +98,11 @@ const rootReducer = (state = initialState, { type, payload }) => {
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name)
       );
-      return { ...state, dogFilter: [...listOrder] };
+      return {
+        ...state,
+        dogFilter: [...listOrder],
+        orderDogs: { ...state.orderDogs, order: ALPHABET, typeOrder: payload },
+      };
     }
     case ORDER_WEIGHT: {
       let listOrder = state.dogFilter.sort((a, b) =>
@@ -102,7 +110,11 @@ const rootReducer = (state = initialState, { type, payload }) => {
           ? getPeso(a.weight) - getPeso(b.weight)
           : getPeso(b.weight) - getPeso(a.weight)
       );
-      return { ...state, dogFilter: [...listOrder] };
+      return {
+        ...state,
+        dogFilter: [...listOrder],
+        orderDogs: { ...state.orderDogs, order: WEIGHT, typeOrder: payload },
+      };
     }
 
     default:
